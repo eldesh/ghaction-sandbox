@@ -1,9 +1,13 @@
 {
-    "type": "application",
-    "source-directories": [
-        "src"
-    ],
     "elm-version": "0.19.1",
+    "type": "package",
+	"name": "eldesh/alt-core-elm",
+	"summary": "An alternative to the core package, it provides general data structures",
+	"license": "MIT",
+	"version": "0.0.1",
+	"exposed-modules": [
+		"Data.List"
+	],
     "dependencies": {
         "direct": {
             "elm/browser": "1.0.2",
