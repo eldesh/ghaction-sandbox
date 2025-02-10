@@ -1,18 +1,17 @@
 {
-    "elm-version": "0.19.1 <= v < 0.19.2",
     "type": "package",
-	"name": "eldesh/alt-core-elm",
-	"summary": "An alternative to the core package, it provides general data structures",
-	"license": "MIT",
-	"version": "0.0.1",
-	"exposed-modules": [
-		"Data.List"
-	],
+    "name": "eldesh/alt-core-elm",
+    "summary": "An alternative to the core package, it provides general data structures",
+    "license": "MIT",
+    "version": "1.0.0",
+    "exposed-modules": [
+        "Data.List"
+    ],
+    "elm-version": "0.19.1 <= v < 0.19.2",
     "dependencies": {
-		"elm/browser": "1.0.2 <= v < 1.0.3",
-		"elm/core": "1.0.5 <= v < 1.0.6",
-		"elm/html": "1.0.0 <= v < 1.0.1"
+        "elm/browser": "1.0.2 <= v < 1.0.3",
+        "elm/core": "1.0.5 <= v < 1.0.6",
+        "elm/html": "1.0.0 <= v < 1.0.1"
     },
-    "test-dependencies": {
-    }
+    "test-dependencies": {}
 }
