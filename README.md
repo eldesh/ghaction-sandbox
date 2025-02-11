@@ -7,4 +7,3 @@ This package provides:
 - combinators (functions) on them
 
 
-
