@@ -2,7 +2,10 @@ module Data.List exposing
     ( and
     , compareLength
     , drop
+    , dropWhile
+    , dropWhileEnd
     , filter
+    , break
     , filterMap
     , foldl
     , foldr
@@ -27,10 +30,12 @@ module Data.List exposing
     , sort
     , sortBy
     , sortWith
+    , span
     , splitAt
     , subsequences
     , tail
     , take
+    , takeWhile
     , transpose
     , uncons
     , unfoldr
@@ -506,6 +511,83 @@ splitAt n list =
                 ( x :: ys, zs )
 
 
+takeWhile : (a -> Bool) -> List a -> List a
+takeWhile p list =
+    case list of
+        [] ->
+            []
+
+        x :: xs ->
+            if p x then
+                x :: takeWhile p xs
+
+            else
+                []
 
 
+dropWhile : (a -> Bool) -> List a -> List a
+dropWhile p list =
+    case list of
+        [] ->
+            []
 
+        x :: xs ->
+            if p x then
+                dropWhile p xs
+
+            else
+                list
+
+
+dropWhileEnd : (a -> Bool) -> List a -> List a
+dropWhileEnd p list =
+    let
+        go notps ps xs =
+            case xs of
+                [] ->
+                    reverse notps
+
+                y :: ys ->
+                    if p y then
+                        go notps (y :: ps) ys
+
+                    else
+                        go (y :: (ps ++ notps)) [] ys
+    in
+    go [] [] list
+
+
+span : (a -> Bool) -> List a -> ( List a, List a )
+span p list =
+    let
+        go acc xs =
+            case xs of
+                [] ->
+                    ( reverse acc, [] )
+
+                y :: ys ->
+                    if p y then
+                        go (y :: acc) ys
+
+                    else
+                        ( reverse acc, xs )
+    in
+    go [] list
+
+
+break : (a -> Bool) -> List a -> ( List a, List a )
+break p list =
+    let
+        go acc xs =
+            case xs of
+                [] ->
+                    ( reverse acc, [] )
+
+                y :: ys ->
+                    if not (p y) then
+                        go (y :: acc) ys
+
+                    else
+                        ( reverse acc, xs )
+    in
+    go [] list
