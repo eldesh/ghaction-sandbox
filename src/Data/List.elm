@@ -1,14 +1,15 @@
 module Data.List exposing
     ( and
+    , break
     , compareLength
     , drop
     , dropWhile
     , dropWhileEnd
     , filter
-    , break
     , filterMap
     , foldl
     , foldr
+    , group
     , head
     , indexedMap
     , intercalate
@@ -32,6 +33,7 @@ module Data.List exposing
     , sortWith
     , span
     , splitAt
+    , stripPrefix
     , subsequences
     , tail
     , take
@@ -591,3 +593,39 @@ break p list =
                         ( reverse acc, xs )
     in
     go [] list
+
+
+stripPrefix : List a -> List a -> Maybe (List a)
+stripPrefix xs ys =
+    case ( xs, ys ) of
+        ( [], _ ) ->
+            Just ys
+
+        ( _ :: _, [] ) ->
+            Nothing
+
+        ( x :: xss, y :: yss ) ->
+            if x == y then
+                stripPrefix xss yss
+
+            else
+                Nothing
+
+
+group : List a -> List (List a)
+group list =
+    case list of
+        [] ->
+            []
+
+        x :: xs ->
+            case group xs of
+                [] ->
+                    [ [ x ] ]
+
+                ys :: yss ->
+                    if Just x == head ys then
+                        (x :: ys) :: yss
+
+                    else
+                        [ x ] :: ys :: yss
