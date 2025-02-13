@@ -12,8 +12,14 @@ module Data.List exposing
     , group
     , head
     , indexedMap
+    , init
+    , inits
     , intercalate
     , isEmpty
+    , isInfixOf
+    , isPrefixOf
+    , isSubsequenceOf
+    , isSuffixOf
     , length
     , map
     , mapAccumL
@@ -36,6 +42,7 @@ module Data.List exposing
     , stripPrefix
     , subsequences
     , tail
+    , tails
     , take
     , takeWhile
     , transpose
@@ -629,3 +636,80 @@ group list =
 
                     else
                         [ x ] :: ys :: yss
+
+
+inits : List a -> List (List a)
+inits list =
+    case list of
+        [] ->
+            [ [] ]
+
+        x :: xs ->
+            [] :: map ((::) x) (inits xs)
+
+
+tails : List a -> List (List a)
+tails list =
+    case list of
+        [] ->
+            [ [] ]
+
+        x :: xs ->
+            list :: tails xs
+
+
+-- Predicates
+
+isPrefixOf : List a -> List a -> Bool
+isPrefixOf prefix list =
+    case ( prefix, list ) of
+        ( [], _ ) ->
+            True
+
+        ( _ :: _, [] ) ->
+            False
+
+        ( x :: xs, y :: ys ) ->
+            if x == y then
+                isPrefixOf xs ys
+
+            else
+                False
+
+
+isSuffixOf : List a -> List a -> Bool
+isSuffixOf suffix list =
+    let
+        rlist =
+            reverse list
+    in
+    isPrefixOf suffix rlist
+
+
+isInfixOf : List a -> List a -> Bool
+isInfixOf xs list =
+    isPrefixOf xs list
+        || (case list of
+                [] ->
+                    False
+
+                _ :: ys ->
+                    isInfixOf xs ys
+           )
+
+
+isSubsequenceOf : List a -> List a -> Bool
+isSubsequenceOf xs list =
+    case ( xs, list ) of
+        ( [], _ ) ->
+            True
+
+        ( _ :: _, [] ) ->
+            False
+
+        ( y :: ys, z :: zs ) ->
+            if y == z then
+                isSubsequenceOf ys zs
+
+            else
+                isSubsequenceOf xs zs
