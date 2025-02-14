@@ -5,8 +5,14 @@ module Data.List exposing
     , drop
     , dropWhile
     , dropWhileEnd
+    , elem
+    , elemIndex
+    , elemIndicies
     , filter
     , filterMap
+    , find
+    , findIndex
+    , findIndicies
     , foldl
     , foldr
     , group
@@ -21,9 +27,11 @@ module Data.List exposing
     , isSubsequenceOf
     , isSuffixOf
     , length
+    , lookup
     , map
     , mapAccumL
     , mapAccumR
+    , notElem
     , null
     , or
     , partition
@@ -658,7 +666,9 @@ tails list =
             list :: tails xs
 
 
+
 -- Predicates
+
 
 isPrefixOf : List a -> List a -> Bool
 isPrefixOf prefix list =
@@ -713,3 +723,127 @@ isSubsequenceOf xs list =
 
             else
                 isSubsequenceOf xs zs
+
+
+
+-- Searching lists
+
+
+elem : a -> List a -> Bool
+elem a list =
+    case list of
+        [] ->
+            False
+
+        x :: xs ->
+            x == a || elem a xs
+
+
+notElem : a -> List a -> Bool
+notElem a list =
+    case list of
+        [] ->
+            True
+
+        x :: xs ->
+            x /= a && notElem a xs
+
+
+lookup : a -> List ( a, b ) -> Maybe b
+lookup v list =
+    case list of
+        [] ->
+            Nothing
+
+        ( a, b ) :: abs ->
+            if a == v then
+                Just b
+
+            else
+                lookup v abs
+
+
+find : (a -> Bool) -> List a -> Maybe a
+find p list =
+    case list of
+        [] ->
+            Nothing
+
+        x :: xs ->
+            if p x then
+                Just x
+
+            else
+                find p xs
+
+
+elemIndex : a -> List a -> Maybe Int
+elemIndex a list =
+    let
+        go n xs =
+            case xs of
+                [] ->
+                    Nothing
+
+                y :: ys ->
+                    if y == a then
+                        Just n
+
+                    else
+                        go (n + 1) ys
+    in
+    go 0 list
+
+
+elemIndicies : a -> List a -> List Int
+elemIndicies a list =
+    let
+        go n xs =
+            case xs of
+                [] ->
+                    []
+
+                y :: ys ->
+                    if y == a then
+                        n :: go (n + 1) ys
+
+                    else
+                        go (n + 1) ys
+    in
+    go 0 list
+
+
+findIndex : (a -> Bool) -> List a -> Maybe Int
+findIndex p list =
+    let
+        go n xs =
+            case xs of
+                [] ->
+                    Nothing
+
+                y :: ys ->
+                    if p y then
+                        Just n
+
+                    else
+                        go (n + 1) ys
+    in
+    go 0 list
+
+
+findIndicies : (a -> Bool) -> List a -> List Int
+findIndicies p list =
+    let
+        go n xs =
+            case xs of
+                [] ->
+                    []
+
+                y :: ys ->
+                    if p y then
+                        n :: go (n + 1) ys
+
+                    else
+                        go (n + 1) ys
+    in
+    go 0 list
