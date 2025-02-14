@@ -2,6 +2,7 @@ module Data.List exposing
     ( and
     , break
     , compareLength
+    , delete
     , drop
     , dropWhile
     , dropWhileEnd
@@ -21,6 +22,7 @@ module Data.List exposing
     , init
     , inits
     , intercalate
+    , intersect
     , isEmpty
     , isInfixOf
     , isPrefixOf
@@ -32,6 +34,7 @@ module Data.List exposing
     , mapAccumL
     , mapAccumR
     , notElem
+    , nub
     , null
     , or
     , partition
@@ -56,6 +59,7 @@ module Data.List exposing
     , transpose
     , uncons
     , unfoldr
+    , union
     , unsnoc
     , unzip
     , unzip3
@@ -900,3 +904,59 @@ unzip3 list =
                     go ( x :: xs, y :: ys, z :: zs ) lss
     in
     go ( [], [], [] ) list
+
+
+nub : List a -> List a
+nub list =
+    case list of
+        [] ->
+            []
+
+        x :: xs ->
+            x :: nub (filter ((/=) x) xs)
+
+
+delete : a -> List a -> List a
+delete a list =
+    case list of
+        [] ->
+            []
+
+        x :: xs ->
+            if x == a then
+                xs
+
+            else
+                delete a xs
+
+
+union : List a -> List a -> List a
+union alist blist =
+    let
+        go acc list =
+            case list of
+                [] ->
+                    []
+
+                x :: xs ->
+                    if elem x acc then
+                        go acc xs
+
+                    else
+                        x :: go (x :: acc) xs
+    in
+    alist ++ go alist blist
+
+
+intersect : List a -> List a -> List a
+intersect alist blist =
+    case alist of
+        [] ->
+            []
+
+        x :: xs ->
+            if elem x blist then
+                x :: intersect xs blist
+
+            else
+                intersect xs blist
