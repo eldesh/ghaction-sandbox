@@ -58,6 +58,11 @@ module Data.List exposing
     , unfoldr
     , unsnoc
     , unzip
+    , unzip3
+    , zip
+    , zip3
+    , zipWith
+    , zipWith3
     )
 
 import List
@@ -847,3 +852,51 @@ findIndicies p list =
                         go (n + 1) ys
     in
     go 0 list
+
+
+
+-- Zipping and unzipping lists
+
+
+zip : List a -> List b -> List ( a, b )
+zip xs ys =
+    zipWith (\x y -> ( x, y )) xs ys
+
+
+zip3 : List a -> List b -> List c -> List ( a, b, c )
+zip3 xs ys zs =
+    zipWith3 (\x y z -> ( x, y, z )) xs ys zs
+
+
+zipWith : (a -> b -> c) -> List a -> List b -> List c
+zipWith f xs ys =
+    case ( xs, ys ) of
+        ( x :: xss, y :: yss ) ->
+            f x y :: zipWith f xss yss
+
+        _ ->
+            []
+
+
+zipWith3 : (a -> b -> c -> d) -> List a -> List b -> List c -> List d
+zipWith3 f xs ys zs =
+    case ( xs, ys, zs ) of
+        ( a :: xss, b :: yss, c :: zss ) ->
+            f a b c :: zipWith3 f xss yss zss
+
+        _ ->
+            []
+
+
+unzip3 : List ( a, b, c ) -> ( List a, List b, List c )
+unzip3 list =
+    let
+        go (( xs, ys, zs ) as acc) ls =
+            case ls of
+                [] ->
+                    acc
+
+                ( x, y, z ) :: lss ->
+                    go ( x :: xs, y :: ys, z :: zs ) lss
+    in
+    go ( [], [], [] ) list
