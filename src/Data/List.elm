@@ -3,6 +3,9 @@ module Data.List exposing
     , break
     , compareLength
     , delete
+    , deleteBy
+    , deleteFirsts
+    , deleteFirstsBy
     , drop
     , dropWhile
     , dropWhileEnd
@@ -17,12 +20,14 @@ module Data.List exposing
     , foldl
     , foldr
     , group
+    , groupBy
     , head
     , indexedMap
     , init
     , inits
     , intercalate
     , intersect
+    , intersectBy
     , isEmpty
     , isInfixOf
     , isPrefixOf
@@ -35,6 +40,7 @@ module Data.List exposing
     , mapAccumR
     , notElem
     , nub
+    , nubBy
     , null
     , or
     , partition
@@ -60,6 +66,7 @@ module Data.List exposing
     , uncons
     , unfoldr
     , union
+    , unionBy
     , unsnoc
     , unzip
     , unzip3
@@ -70,6 +77,7 @@ module Data.List exposing
     )
 
 import List
+import Maybe
 
 
 
@@ -907,56 +915,134 @@ unzip3 list =
 
 
 nub : List a -> List a
-nub list =
-    case list of
-        [] ->
-            []
-
-        x :: xs ->
-            x :: nub (filter ((/=) x) xs)
+nub =
+    nubBy (==)
 
 
 delete : a -> List a -> List a
-delete a list =
+delete =
+    deleteBy (==)
+
+
+{-| corresponds to (\\) in Data.List in the Haskell base.
+
+    deleteFirsts (toList "Hello World!") (toList "ell W") == toList "Hoorld!"
+
+-}
+deleteFirsts : List a -> List a -> List a
+deleteFirsts =
+    deleteFirstsBy (==)
+
+
+union : List a -> List a -> List a
+union =
+    unionBy (==)
+
+
+intersect : List a -> List a -> List a
+intersect =
+    intersectBy (==)
+
+
+sortOn : (a -> comparable) -> List a -> List a
+sortOn f =
+    sortWith (\x y -> compare (f x) (f y))
+
+
+
+-- Generalized functions
+
+
+nubBy : (a -> a -> Bool) -> List a -> List a
+nubBy f list =
     case list of
         [] ->
             []
 
         x :: xs ->
-            if x == a then
+            x :: nubBy f (filter (not << f x) xs)
+
+
+deleteBy : (a -> a -> Bool) -> a -> List a -> List a
+deleteBy f a list =
+    case list of
+        [] ->
+            []
+
+        x :: xs ->
+            if f a x then
                 xs
 
             else
-                delete a xs
+                x :: deleteBy f a xs
 
 
-union : List a -> List a -> List a
-union alist blist =
+deleteFirstsBy : (a -> a -> Bool) -> List a -> List a -> List a
+deleteFirstsBy f xs ys =
     let
-        go acc list =
+        go x list =
             case list of
                 [] ->
                     []
 
-                x :: xs ->
-                    if elem x acc then
-                        go acc xs
+                l :: ls ->
+                    if f x l then
+                        ls
 
                     else
-                        x :: go (x :: acc) xs
+                        l :: go x ls
     in
-    alist ++ go alist blist
+    foldl go xs ys
 
 
-intersect : List a -> List a -> List a
-intersect alist blist =
+isJust : Maybe a -> Bool
+isJust x =
+    case x of
+        Nothing ->
+            False
+
+        _ ->
+            True
+
+
+unionBy : (a -> a -> Bool) -> List a -> List a -> List a
+unionBy f alist blist =
+    alist ++ foldl (deleteBy f) (nubBy f blist) alist
+
+
+intersectBy : (a -> a -> Bool) -> List a -> List a -> List a
+intersectBy f alist blist =
     case alist of
         [] ->
             []
 
         x :: xs ->
-            if elem x blist then
+            if isJust (find (f x) blist) then
                 x :: intersect xs blist
 
             else
                 intersect xs blist
+
+
+groupBy : (a -> a -> Bool) -> List a -> List (List a)
+groupBy f list =
+    let
+        go : List (List a) -> List a -> List (List a)
+        go grs xs =
+            case xs of
+                [] ->
+                    reverse grs
+
+                x :: xss ->
+                    case grs of
+                        [] ->
+                            go [ [ x ] ] xss
+
+                        gr :: grss ->
+                            if Just True == Maybe.map (\m -> f m x) (head gr) then
+                                go ((gr ++ [ x ]) :: grss) xss
+
+                            else
+                                go ([ x ] :: grs) xss
+    in
+    go [] list
