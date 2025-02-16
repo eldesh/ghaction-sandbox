@@ -25,6 +25,8 @@ module Data.List exposing
     , indexedMap
     , init
     , inits
+    , insert
+    , insertBy
     , intercalate
     , intersect
     , intersectBy
@@ -38,6 +40,8 @@ module Data.List exposing
     , map
     , mapAccumL
     , mapAccumR
+    , maximumBy
+    , minimumBy
     , notElem
     , nub
     , nubBy
@@ -914,6 +918,20 @@ unzip3 list =
     go ( [], [], [] ) list
 
 
+insert : comparable -> List comparable -> List comparable
+insert a list =
+    case list of
+        [] ->
+            [ a ]
+
+        x :: xs ->
+            if a < x then
+                a :: x :: xs
+
+            else
+                x :: insert a xs
+
+
 nub : List a -> List a
 nub =
     nubBy (==)
@@ -1046,3 +1064,71 @@ groupBy f list =
                                 go ([ x ] :: grs) xss
     in
     go [] list
+
+
+
+-- User-supplied comparison
+
+
+insertBy : (a -> a -> Order) -> a -> List a -> List a
+insertBy cmp a list =
+    case list of
+        [] ->
+            [ a ]
+
+        x :: xs ->
+            case cmp a x of
+                LT ->
+                    a :: x :: xs
+
+                EQ ->
+                    a :: x :: xs
+
+                GT ->
+                    x :: insertBy cmp a xs
+
+
+maximumBy : (a -> a -> Order) -> List a -> Maybe a
+maximumBy cmp list =
+    let
+        go m xs =
+            case xs of
+                [] ->
+                    m
+
+                v :: vs ->
+                    if cmp m v == LT then
+                        go v vs
+
+                    else
+                        go m vs
+    in
+    case list of
+        [] ->
+            Nothing
+
+        x :: xs ->
+            Just (go x xs)
+
+
+minimumBy : (a -> a -> Order) -> List a -> Maybe a
+minimumBy cmp list =
+    let
+        go m xs =
+            case xs of
+                [] ->
+                    m
+
+                v :: vs ->
+                    if cmp m v == GT then
+                        go v vs
+
+                    else
+                        go m vs
+    in
+    case list of
+        [] ->
+            Nothing
+
+        x :: xs ->
+            Just (go x xs)
