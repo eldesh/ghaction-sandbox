@@ -19,6 +19,7 @@ module Data.List exposing
     , findIndicies
     , foldl
     , foldr
+    , genericLength
     , group
     , groupBy
     , head
@@ -1132,3 +1133,13 @@ minimumBy cmp list =
 
         x :: xs ->
             Just (go x xs)
+
+
+genericLength : List a -> number
+genericLength list =
+    case list of
+        [] ->
+            0
+
+        _ :: xs ->
+            1 + genericLength xs
