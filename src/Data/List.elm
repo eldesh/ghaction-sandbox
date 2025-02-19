@@ -94,10 +94,12 @@ singleton =
     List.singleton
 
 
+repeat : Int -> a -> List a
 repeat =
     List.repeat
 
 
+range : Int -> Int -> List Int
 range =
     List.range
 
@@ -106,26 +108,32 @@ range =
 -- Transform
 
 
+map : (a -> b) -> List a -> List b
 map =
     List.map
 
 
+indexedMap : (Int -> a -> b) -> List a -> List b
 indexedMap =
     List.indexedMap
 
 
+foldl : (a -> b -> b) -> b -> List a -> b
 foldl =
     List.foldl
 
 
+foldr : (a -> b -> b) -> b -> List a -> b
 foldr =
     List.foldr
 
 
+filter : (a -> Bool) -> List a -> List a
 filter =
     List.filter
 
 
+filterMap : (a -> Maybe b) -> List a -> List b
 filterMap =
     List.filterMap
 
@@ -134,38 +142,47 @@ filterMap =
 -- Utilities
 
 
+length : List a -> Int
 length =
     List.length
 
 
+reverse : List a -> List a
 reverse =
     List.reverse
 
 
+member : a -> List a -> Bool
 member =
     List.member
 
 
+all : (a -> Bool) -> List a -> Bool
 all =
     List.all
 
 
+any : (a -> Bool) -> List a -> Bool
 any =
     List.any
 
 
+maximum : List comparable -> Maybe comparable
 maximum =
     List.maximum
 
 
+minimum : List comparable -> Maybe comparable
 minimum =
     List.minimum
 
 
+sum : List number -> number
 sum =
     List.sum
 
 
+product : List number -> number
 product =
     List.product
 
@@ -174,34 +191,42 @@ product =
 -- Combine
 
 
+append : List a -> List a -> List a
 append =
     List.append
 
 
+concat : List (List a) -> List a
 concat =
     List.concat
 
 
+concatMap : (a -> List b) -> List a -> List b
 concatMap =
     List.concatMap
 
 
+intersperse : a -> List a -> List a
 intersperse =
     List.intersperse
 
 
+map2 : (a -> b -> result) -> List a -> List b -> List result
 map2 =
     List.map2
 
 
+map3 : (a -> b -> c -> result) -> List a -> List b -> List c -> List result
 map3 =
     List.map3
 
 
+map4 : (a -> b -> c -> d -> result) -> List a -> List b -> List c -> List d -> List result
 map4 =
     List.map4
 
 
+map5 : (a -> b -> c -> d -> e -> result) -> List a -> List b -> List c -> List d -> List e -> List result
 map5 =
     List.map5
 
@@ -210,14 +235,17 @@ map5 =
 -- Sort
 
 
+sort : List comparable -> List comparable
 sort =
     List.sort
 
 
+sortBy : (a -> comparable) -> List a -> List a
 sortBy =
     List.sortBy
 
 
+sortWith : (a -> a -> Order) -> List a -> List a
 sortWith =
     List.sortWith
 
@@ -226,30 +254,37 @@ sortWith =
 -- Deconstruct
 
 
+isEmpty : List a -> Bool
 isEmpty =
     List.isEmpty
 
 
+head : List a -> Maybe a
 head =
     List.head
 
 
+tail : List a -> Maybe (List a)
 tail =
     List.tail
 
 
+take : Int -> List a -> List a
 take =
     List.take
 
 
+drop : Int -> List a -> List a
 drop =
     List.drop
 
 
+partition : (a -> Bool) -> List a -> ( List a, List a )
 partition =
     List.partition
 
 
+unzip : List ( a, b ) -> ( List a, List b )
 unzip =
     List.unzip
 
