@@ -36,6 +36,7 @@ module Data.List exposing
     , isPrefixOf
     , isSubsequenceOf
     , isSuffixOf
+    , last
     , length
     , lookup
     , map
