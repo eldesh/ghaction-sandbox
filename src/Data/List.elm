@@ -404,6 +404,9 @@ intercalate xs xxs =
         [] ->
             []
 
+        [ yys ] ->
+            yys
+
         ys :: yys ->
             (ys ++ xs) ++ intercalate xs yys
 
