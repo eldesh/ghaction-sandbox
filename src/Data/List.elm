@@ -1,7 +1,12 @@
 module Data.List exposing
-    ( and
+    ( all
+    , and
+    , any
+    , append
     , break
     , compareLength
+    , concat
+    , concatMap
     , delete
     , deleteBy
     , deleteFirsts
@@ -31,6 +36,7 @@ module Data.List exposing
     , intercalate
     , intersect
     , intersectBy
+    , intersperse
     , isEmpty
     , isInfixOf
     , isPrefixOf
@@ -42,7 +48,9 @@ module Data.List exposing
     , map
     , mapAccumL
     , mapAccumR
+    , maximum
     , maximumBy
+    , minimum
     , minimumBy
     , notElem
     , nub
@@ -51,6 +59,7 @@ module Data.List exposing
     , or
     , partition
     , permutations
+    , product
     , range
     , repeat
     , reverse
@@ -64,6 +73,7 @@ module Data.List exposing
     , splitAt
     , stripPrefix
     , subsequences
+    , sum
     , tail
     , tails
     , take
