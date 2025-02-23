@@ -323,7 +323,7 @@ init list =
         [] ->
             Nothing
 
-        [ x ] ->
+        [ _ ] ->
             Just []
 
         x :: xs ->
