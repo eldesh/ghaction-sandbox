@@ -7,3 +7,13 @@ This package provides:
 - combinators (functions) on them
 
 
+# Modules
+
+This library provides modules as follows:
+
+- Data.List
+
+    Expose all standard list functions except for `(::)` from `List` module,
+    and provides many other utility functions on lists.
+
+
