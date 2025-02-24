@@ -46,10 +46,15 @@ module Data.List exposing
     , length
     , lookup
     , map
+    , map2
+    , map3
+    , map4
+    , map5
     , mapAccumL
     , mapAccumR
     , maximum
     , maximumBy
+    , member
     , minimum
     , minimumBy
     , notElem
