@@ -56,34 +56,6 @@ nil =
     constant []
 
 
-curry : (( a, b ) -> c) -> a -> b -> c
-curry f =
-    \a b -> f ( a, b )
-
-
-uncurry : (a -> b -> c) -> ( a, b ) -> c
-uncurry f ( a, b ) =
-    f a b
-
-
-filterIndex : (a -> Int -> Bool) -> List a -> List a
-filterIndex f list =
-    let
-        go xs i =
-            case xs of
-                [] ->
-                    []
-
-                x :: xxs ->
-                    if f x i then
-                        x :: go xxs (i + 1)
-
-                    else
-                        go xxs (i + 1)
-    in
-    go list 0
-
-
 suite : Test
 suite =
     describe "Extentions"
