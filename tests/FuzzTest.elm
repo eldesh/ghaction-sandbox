@@ -3,6 +3,7 @@ module FuzzTest exposing (..)
 import Data.List exposing (..)
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, andThen, constant, int, list, pair, string)
+import Mat2d exposing (..)
 import Test exposing (..)
 import Test.Distribution exposing (..)
 
@@ -108,4 +109,11 @@ suite =
         , fuzz (pair (list int) (list (list int))) "intercalate xs xss is equivalent to (concat (intersperse xs xss))" <|
             \( xs, xss ) ->
                 Expect.equal (Data.List.concat (intersperse xs xss)) (intercalate xs xss)
+        , fuzz (mat2d int) "transpose . transpose is id for the rectangular list of lists" <|
+            \mat ->
+                mat
+                    |> toList
+                    |> transpose
+                    |> transpose
+                    |> Expect.equal (toList mat)
         ]
