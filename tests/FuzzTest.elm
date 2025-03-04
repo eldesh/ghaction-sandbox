@@ -2,7 +2,7 @@ module FuzzTest exposing (..)
 
 import Data.List exposing (..)
 import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, andThen, constant, int, list, pair, string)
+import Fuzz exposing (Fuzzer, andThen, constant, int, list, listOfLengthBetween, pair, string)
 import Mat2d exposing (..)
 import Test exposing (..)
 import Test.Distribution exposing (..)
@@ -116,4 +116,9 @@ suite =
                     |> transpose
                     |> transpose
                     |> Expect.equal (toList mat)
+        , fuzz (listOfLengthBetween 0 10 int) "all `subsequences' are subsequences" <|
+            \xs ->
+                subsequences xs
+                    |> all (\list -> isSubsequenceOf list xs)
+                    |> Expect.equal True
         ]
