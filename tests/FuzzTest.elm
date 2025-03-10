@@ -2,7 +2,7 @@ module FuzzTest exposing (..)
 
 import Data.List exposing (..)
 import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, andThen, constant, int, list, listOfLengthBetween, pair, string)
+import Fuzz exposing (Fuzzer, andThen, bool, constant, int, list, listOfLengthBetween, pair, string)
 import Mat2d exposing (..)
 import Test exposing (..)
 import Test.Distribution exposing (..)
@@ -121,4 +121,30 @@ suite =
                 subsequences xs
                     |> all (\list -> isSubsequenceOf list xs)
                     |> Expect.equal True
+        , fuzz (listOfLengthBetween 0 5 int) "forall ys in permutations xs, sort ys == sort xs" <|
+            \xs ->
+                xs
+                    |> permutations
+                    |> all (\ys -> sort ys == sort xs)
+                    |> Expect.equal True
+        , fuzz (constant []) "and [] is True" <|
+            \xs ->
+                xs
+                    |> and
+                    |> Expect.equal True
+        , fuzz (list bool) "and xs == all ((==) True)" <|
+            \xs ->
+                xs
+                    |> and
+                    |> Expect.equal (all ((==) True) xs)
+        , fuzz (constant []) "or [] is False" <|
+            \xs ->
+                xs
+                    |> or
+                    |> Expect.equal False
+        , fuzz (list bool) "or xs == any ((==) True)" <|
+            \xs ->
+                xs
+                    |> or
+                    |> Expect.equal (any ((==) True) xs)
         ]
