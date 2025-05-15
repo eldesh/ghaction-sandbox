@@ -60,7 +60,12 @@ nil =
 suite : Test
 suite =
     describe "Extentions"
-        [ fuzz (list int) "reverse . reverse is id" <|
+        [ fuzz int "singleton x <| length is 1" <|
+            \int ->
+                int |> singleton
+                    |> List.length
+                    |> Expect.equal 1
+        , fuzz (list int) "reverse . reverse is id" <|
             \ints ->
                 ints
                     |> reverse
