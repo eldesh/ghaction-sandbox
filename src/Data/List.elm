@@ -42,6 +42,7 @@ module Data.List exposing
     , isPrefixOf
     , isSubsequenceOf
     , isSuffixOf
+    , iterate
     , last
     , length
     , lookup
@@ -567,6 +568,28 @@ mapAccumR f acc list =
                     f bcc x
             in
             ( ccc, y :: ys )
+
+
+
+-- Generating list
+
+
+{-| `n` repeated applications `f` to `x`
+
+    ```
+    iterate n f x == [x, f x, f (f x), ...]
+    ```
+
+    iterate 3 ((+) 1) 0 == [ 0, 1, 2 ]
+
+-}
+iterate : Int -> (a -> a) -> a -> List a
+iterate n f x =
+    if n <= 0 then
+        []
+
+    else
+        x :: iterate (n - 1) f (f x)
 
 
 
