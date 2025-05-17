@@ -2,7 +2,7 @@ module FuzzTest exposing (..)
 
 import Data.List exposing (..)
 import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, andThen, bool, constant, int, list, listOfLengthBetween, pair, string)
+import Fuzz exposing (Fuzzer, andThen, bool, constant, int, intRange, list, listOfLengthBetween, pair, string)
 import Mat2d exposing (..)
 import Test exposing (..)
 import Test.Distribution exposing (..)
@@ -201,4 +201,16 @@ suite =
                 in
                 mapAccumR f [] xs
                     |> Expect.equal ( xs, xs )
+        , fuzz2 (intRange 0 10) int "iterate n f == take n << unfoldr f" <|
+            \n e ->
+                unfoldr
+                    (\( m, x ) ->
+                        if m > 0 then
+                            Just ( x, ( m - 1, x + 1 ) )
+
+                        else
+                            Nothing
+                    )
+                    ( n, e )
+                    |> Expect.equal (iterate n ((+) 1) e)
         ]
