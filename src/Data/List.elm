@@ -596,13 +596,14 @@ iterate n f x =
 -- Unfolding
 
 
+unfoldr : (b -> Maybe ( a, b )) -> b -> List a
 unfoldr f e =
     case f e of
         Nothing ->
             []
 
-        Just ( x, e_ ) ->
-            x :: unfoldr f e_
+        Just ( x, next ) ->
+            x :: unfoldr f next
 
 
 
