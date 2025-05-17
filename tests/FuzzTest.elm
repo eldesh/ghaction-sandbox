@@ -271,17 +271,33 @@ suite =
           <|
             \( n, xs ) ->
                 take n xs
-                    |> (\ys ->
-                            isPrefixOf ys xs
-                                |> Expect.equal True
-                       )
+                    |> (\ys -> isPrefixOf ys xs)
+                    |> Expect.equal True
         , fuzz (andThen (\xs -> pair (intRange 0 (length xs)) (constant xs)) (list int))
             "isSuffixOf (drop n xs) xs"
           <|
             \( n, xs ) ->
                 drop n xs
-                    |> (\ys ->
-                            isSuffixOf ys xs
-                                |> Expect.equal True
-                       )
+                    |> (\ys -> isSuffixOf ys xs)
+                    |> Expect.equal True
+        , fuzz
+            (andThen
+                (\xs ->
+                    andThen
+                        (\n ->
+                            andThen
+                                (\m ->
+                                    constant ( drop n <| take m xs, xs )
+                                )
+                                (intRange n (length xs))
+                        )
+                        (intRange 0 (length xs))
+                )
+                (list int)
+            )
+            "isInfixOf xs ys == any (isPrefixOf xs) (tails ys)"
+          <|
+            \( xs, ys ) ->
+                isInfixOf xs ys
+                    |> Expect.equal (any (isPrefixOf xs) (tails ys))
         ]
