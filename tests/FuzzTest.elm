@@ -169,4 +169,36 @@ suite =
             \e xs ->
                 head (scanr (-) e xs)
                     |> Expect.equal (Just <| foldr (-) e xs)
+        , fuzz int "mapAccumL f e [] == (e, [])" <|
+            \e ->
+                let
+                    f s ys =
+                        ( s, [] )
+                in
+                mapAccumL f e []
+                    |> Expect.equal ( e, [] )
+        , fuzz (list int) "mapAccumL (\\s x-> (x::s, x)) e xs == (rev xs, xs)" <|
+            \xs ->
+                let
+                    f s x =
+                        ( x :: s, x )
+                in
+                mapAccumL f [] xs
+                    |> Expect.equal ( reverse xs, xs )
+        , fuzz int "mapAccumR f e [] == (e, [])" <|
+            \e ->
+                let
+                    f s ys =
+                        ( s, [] )
+                in
+                mapAccumR f e []
+                    |> Expect.equal ( e, [] )
+        , fuzz (list int) "mapAccumR (\\s x-> (x::s, x)) e xs == (rev xs, xs)" <|
+            \xs ->
+                let
+                    f s x =
+                        ( x :: s, x )
+                in
+                mapAccumR f [] xs
+                    |> Expect.equal ( xs, xs )
         ]
