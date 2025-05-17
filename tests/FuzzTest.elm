@@ -57,6 +57,11 @@ nil =
     constant []
 
 
+uncurry : (a -> b -> c) -> ( a, b ) -> c
+uncurry f ( a, b ) =
+    f a b
+
+
 suite : Test
 suite =
     describe "Extentions"
@@ -213,4 +218,13 @@ suite =
                     )
                     ( n, e )
                     |> Expect.equal (iterate n ((+) 1) e)
+        , fuzz2 int (list int) "splitAt n xs |> uncurry (++) == xs" <|
+            \n xs ->
+                splitAt n xs
+                    |> uncurry (++)
+                    |> Expect.equal xs
+        , fuzz (list int) "isPrefixOf (dropWhileEnd p xs) xs" <|
+            \xs ->
+                isPrefixOf (dropWhileEnd ((>) 10) xs) xs
+                    |> Expect.equal True
         ]
