@@ -227,4 +227,12 @@ suite =
             \xs ->
                 isPrefixOf (dropWhileEnd ((>) 10) xs) xs
                     |> Expect.equal True
+        , fuzz (list int) "span p xs == (takeWhile p xs, dropWhile p xs)" <|
+            \xs ->
+                let
+                    p x =
+                        modBy 2 x == 0
+                in
+                span p xs
+                    |> Expect.equal ( takeWhile p xs, dropWhile p xs )
         ]
