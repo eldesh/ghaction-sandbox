@@ -62,7 +62,8 @@ suite =
     describe "Extentions"
         [ fuzz int "singleton x <| length is 1" <|
             \int ->
-                int |> singleton
+                int
+                    |> singleton
                     |> List.length
                     |> Expect.equal 1
         , fuzz (list int) "reverse . reverse is id" <|
@@ -155,7 +156,7 @@ suite =
         , fuzz int "scanl f e [] == [e]" <|
             \e ->
                 scanl (+) e []
-                    |> Expect.equal [e]
+                    |> Expect.equal [ e ]
         , fuzz2 int (list int) "last (scanl f e xs) == foldl f e xs" <|
             \e xs ->
                 last (scanl (-) e xs)
@@ -163,7 +164,7 @@ suite =
         , fuzz int "scanr f e [] == [e]" <|
             \e ->
                 scanr (+) e []
-                    |> Expect.equal [e]
+                    |> Expect.equal [ e ]
         , fuzz2 int (list int) "head (scanr f e xs) == foldr f e xs" <|
             \e xs ->
                 head (scanr (-) e xs)
