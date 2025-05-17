@@ -235,4 +235,12 @@ suite =
                 in
                 span p xs
                     |> Expect.equal ( takeWhile p xs, dropWhile p xs )
+        , fuzz (list int) "break p xs == span (not >> p)" <|
+            \xs ->
+                let
+                    p x =
+                        modBy 2 x == 0
+                in
+                break p xs
+                    |> Expect.equal (span (not << p) xs)
         ]
