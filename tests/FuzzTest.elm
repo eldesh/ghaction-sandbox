@@ -266,4 +266,22 @@ suite =
             \xs ->
                 tails xs
                     |> Expect.equal (scanr (::) [] xs)
+        , fuzz (andThen (\xs -> pair (intRange 0 (length xs)) (constant xs)) (list int))
+            "isPrefixOf (take n xs) xs"
+          <|
+            \( n, xs ) ->
+                take n xs
+                    |> (\ys ->
+                            isPrefixOf ys xs
+                                |> Expect.equal True
+                       )
+        , fuzz (andThen (\xs -> pair (intRange 0 (length xs)) (constant xs)) (list int))
+            "isSuffixOf (drop n xs) xs"
+          <|
+            \( n, xs ) ->
+                drop n xs
+                    |> (\ys ->
+                            isSuffixOf ys xs
+                                |> Expect.equal True
+                       )
         ]

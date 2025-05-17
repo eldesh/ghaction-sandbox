@@ -793,7 +793,7 @@ isSuffixOf suffix list =
         rlist =
             reverse list
     in
-    isPrefixOf suffix rlist
+    isPrefixOf (reverse suffix) rlist
 
 
 isInfixOf : List a -> List a -> Bool
