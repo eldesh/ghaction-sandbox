@@ -152,4 +152,20 @@ suite =
                 xs
                     |> or
                     |> Expect.equal (any ((==) True) xs)
+        , fuzz int "scanl f e [] == [e]" <|
+            \e ->
+                scanl (+) e []
+                    |> Expect.equal [e]
+        , fuzz2 int (list int) "last (scanl f e xs) == foldl f e xs" <|
+            \e xs ->
+                last (scanl (-) e xs)
+                    |> Expect.equal (Just <| foldl (-) e xs)
+        , fuzz int "scanr f e [] == [e]" <|
+            \e ->
+                scanr (+) e []
+                    |> Expect.equal [e]
+        , fuzz2 int (list int) "head (scanr f e xs) == foldr f e xs" <|
+            \e xs ->
+                head (scanr (-) e xs)
+                    |> Expect.equal (Just <| foldr (-) e xs)
         ]
