@@ -505,14 +505,14 @@ or list =
 -- Building Lists
 
 
-scanl : (b -> a -> b) -> b -> List a -> List b
+scanl : (a -> b -> b) -> b -> List a -> List b
 scanl f e list =
     case list of
         [] ->
             [ e ]
 
         x :: xs ->
-            e :: scanl f (f e x) xs
+            e :: scanl f (f x e) xs
 
 
 scanr : (a -> b -> b) -> b -> List a -> List b
