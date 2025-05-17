@@ -762,7 +762,7 @@ tails list =
         [] ->
             [ [] ]
 
-        x :: xs ->
+        _ :: xs ->
             list :: tails xs
 
 

@@ -62,6 +62,11 @@ uncurry f ( a, b ) =
     f a b
 
 
+flip : (a -> b -> c) -> b -> a -> c
+flip f x y =
+    f y x
+
+
 suite : Test
 suite =
     describe "Extentions"
@@ -243,4 +248,22 @@ suite =
                 in
                 break p xs
                     |> Expect.equal (span (not << p) xs)
+        , fuzz2 (list int) (list int) "stripPrefix xs xss |> (++) xs == xss" <|
+            \prefix xs ->
+                stripPrefix prefix (prefix ++ xs)
+                    |> Maybe.map ((++) prefix)
+                    |> Expect.equal (Just (prefix ++ xs))
+        , fuzz (list int) "group xs |> concat == xs" <|
+            \xs ->
+                group xs
+                    |> Data.List.concat
+                    |> Expect.equal xs
+        , fuzz (list int) "inits xs == map reverse << scanl (flip (::)) [] <| xs" <|
+            \xs ->
+                inits xs
+                    |> Expect.equal (map reverse << scanl (::) [] <| xs)
+        , fuzz (list int) "tails xs == scanr (::) [] <| xs" <|
+            \xs ->
+                tails xs
+                    |> Expect.equal (scanr (::) [] xs)
         ]
