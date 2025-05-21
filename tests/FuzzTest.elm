@@ -2,7 +2,7 @@ module FuzzTest exposing (..)
 
 import Data.List exposing (..)
 import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, andThen, bool, constant, int, intRange, list, listOfLengthBetween, pair, string)
+import Fuzz exposing (Fuzzer, andThen, bool, constant, int, intRange, list, listOfLength, listOfLengthBetween, pair, string)
 import Mat2d exposing (..)
 import Test exposing (..)
 import Test.Distribution exposing (..)
@@ -312,4 +312,8 @@ suite =
             \( xs, ys ) ->
                 isSubsequenceOf xs ys
                     |> Expect.equal (elem xs <| subsequences ys)
+        , fuzz (andThen (\xs -> pair (constant xs) (listOfLength (length xs) int)) (list int)) "zipWith pair == zip" <|
+            \( xs, ys ) ->
+                zipWith Tuple.pair xs ys
+                    |> Expect.equal (zip xs ys)
         ]
