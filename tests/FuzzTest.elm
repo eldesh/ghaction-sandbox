@@ -303,11 +303,7 @@ suite =
         , fuzz
             (andThen
                 (\ys ->
-                    let
-                        ysl =
-                            length ys
-                    in
-                    pair (listOfLengthBetween 0 ysl (intRange 0 3)) (constant ys)
+                    pair (listOfLengthBetween 0 (length ys) (intRange 0 3)) (constant ys)
                 )
                 (listOfLengthBetween 0 10 (intRange 0 3))
             )
