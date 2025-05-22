@@ -1,102 +1,131 @@
 module Data.List exposing
-    ( all
-    , and
-    , any
-    , append
-    , break
-    , compareLength
-    , concat
-    , concatMap
-    , delete
-    , deleteBy
-    , deleteFirsts
-    , deleteFirstsBy
-    , drop
-    , dropWhile
-    , dropWhileEnd
-    , elem
-    , elemIndex
-    , elemIndicies
-    , filter
-    , filterMap
-    , find
-    , findIndex
-    , findIndicies
-    , foldl
-    , foldr
-    , genericLength
-    , group
-    , groupBy
-    , head
-    , indexedMap
-    , init
-    , inits
-    , insert
-    , insertBy
-    , intercalate
-    , intersect
-    , intersectBy
-    , intersperse
-    , isEmpty
-    , isInfixOf
-    , isPrefixOf
-    , isSubsequenceOf
-    , isSuffixOf
-    , iterate
-    , last
-    , length
-    , lookup
-    , map
-    , map2
-    , map3
-    , map4
-    , map5
-    , mapAccumL
-    , mapAccumR
-    , maximum
-    , maximumBy
-    , member
-    , minimum
-    , minimumBy
-    , notElem
-    , nub
-    , nubBy
-    , null
-    , or
-    , partition
-    , permutations
-    , product
-    , range
-    , repeat
-    , reverse
-    , scanl
-    , scanr
-    , singleton
-    , sort
-    , sortBy
-    , sortWith
-    , span
-    , splitAt
-    , stripPrefix
-    , subsequences
-    , sum
-    , tail
-    , tails
-    , take
-    , takeWhile
-    , transpose
-    , uncons
+    ( append, head, last, tail, init, uncons, unsnoc, null, length, compareLength
+    , replicate
+    , map, reverse, intersperse, intercalate, transpose, subsequences, permutations
+    , foldl, foldr
+    , concat, concatMap, and, or, any, all, sum, product, minimum
+    , scanl, scanr
+    , mapAccumL, mapAccumR
+    , iterate, repeat
     , unfoldr
-    , union
-    , unionBy
-    , unsnoc
-    , unzip
-    , unzip3
-    , zip
-    , zip3
-    , zipWith
-    , zipWith3
+    , take, drop, splitAt, takeWhile, dropWhile, dropWhileEnd, span, break, stripPrefix, group, inits, tails
+    , isPrefixOf, isSuffixOf, isInfixOf, isSubsequenceOf
+    , elem, notElem, lookup
+    , find, filter, partition
+    , elemIndex, elemIndicies, findIndex, findIndicies
+    , zip, zip3, zipWith, zipWith3, unzip, unzip3
+    , nub, delete, deleteFirsts, union, intersect
+    , sort, sortOn, insert
+    , nubBy, deleteBy, deleteFirstsBy, unionBy, groupBy
+    , sortBy, sortWith, insertBy, maximumBy, minimumBy
+    , genericLength
+    , filterMap, indexedMap, intersectBy, isEmpty, map2, map3, map4, map5, maximum, member, range, singleton
     )
+
+{-| This library fills a bunch of important niches in Elm. A `Maybe` can help
+you with optional arguments, error handling, and records with optional fields.
+
+
+# Definition
+
+[List](https://package.elm-lang.org/packages/elm/core/latest/List)
+
+
+# Basic functions
+
+@docs append, head, last, tail, init, uncons, unsnoc, singleton, null, isEmpty, length, compareLength
+
+
+# List transformations
+
+@docs map, map2, map3, map4, map5, indexedMap, reverse, intersperse, intercalate, transpose, subsequences, permutations, filterMap
+
+
+# Reducing lists
+
+@docs foldl, foldr
+
+
+# Special folds
+
+@docs concat, concatMap, and, or, any, all, sum, product, maximum, minimum
+
+
+# Building lists (Scans)
+
+@docs scanl, scanr
+
+
+# Building lists (Accumulating maps)
+
+@docs mapAccumL, mapAccumR
+
+
+# Building lists (infinite lists)
+
+@docs iterate, repeat, range, replicate
+
+
+# Building lists (Unfolding)
+
+@docs unfoldr
+
+
+# Sublists (Extracting sublists)
+
+@docs take, drop, splitAt, takeWhile, dropWhile, dropWhileEnd, span, break, stripPrefix, group, inits, tails
+
+
+# Sublists (Predicates)
+
+@docs isPrefixOf, isSuffixOf, isInfixOf, isSubsequenceOf
+
+
+# Searching lists (Searching by equality)
+
+@docs elem, notElem, lookup, member
+
+
+# Searching lists (Searching with a predicate)
+
+@docs find, filter, partition
+
+
+# Indexing lists
+
+@docs elemIndex, elemIndicies, findIndex, findIndicies
+
+
+# Zipping and unzipping lists
+
+@docs zip, zip3, zipWith, zipWith3, unzip, unzip3
+
+
+# Special lists ("Set" operations)
+
+@docs nub, delete, deleteFirsts, union, intersect
+
+
+# Special lists (Ordered lists)
+
+@docs sort, sortOn, insert
+
+
+# Generalized functions (The "By" operations)
+
+@docs nubBy, deleteBy, deleteFirstsBy, unionBy, intersectBy, groupBy
+
+
+# Generalized functions (User-supplied comparison)
+
+@docs sortBy, sortWith, insertBy, maximumBy, minimumBy
+
+
+# Generalized functions (The "generic" operations)
+
+@docs genericLength
+
+-}
 
 import List
 import Maybe
@@ -255,11 +284,6 @@ map5 =
 sort : List comparable -> List comparable
 sort =
     List.sort
-
-
-sortBy : (a -> comparable) -> List a -> List a
-sortBy =
-    List.sortBy
 
 
 sortWith : (a -> a -> Order) -> List a -> List a
@@ -592,6 +616,10 @@ iterate n f x =
         x :: iterate (n - 1) f (f x)
 
 
+replicate : Int -> a -> List a
+replicate =
+    repeat
+
 
 -- Unfolding
 
@@ -830,13 +858,8 @@ isSubsequenceOf xs list =
 
 
 elem : a -> List a -> Bool
-elem a list =
-    case list of
-        [] ->
-            False
-
-        x :: xs ->
-            x == a || elem a xs
+elem =
+    member
 
 
 notElem : a -> List a -> Bool
@@ -1042,8 +1065,8 @@ intersect =
 
 
 sortOn : (a -> comparable) -> List a -> List a
-sortOn f =
-    sortWith (\x y -> compare (f x) (f y))
+sortOn =
+    List.sortBy
 
 
 
@@ -1147,6 +1170,11 @@ groupBy f list =
 
 
 -- User-supplied comparison
+
+
+sortBy : (a -> a -> Order) -> List a -> List a
+sortBy =
+    List.sortWith
 
 
 insertBy : (a -> a -> Order) -> a -> List a -> List a
