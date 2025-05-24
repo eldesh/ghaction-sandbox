@@ -143,6 +143,15 @@ suite =
                     |> permutations
                     |> all (\ys -> sort ys == sort xs)
                     |> Expect.equal True
+        , fuzz (listOfLength 7 int) "map (take n) (take (product (range 1 n)) (permutations xs)) == permutations xs" <|
+            \xs ->
+                let
+                    len =
+                        length xs
+                in
+                xs
+                    |> permutations
+                    |> Expect.equal (map (take len) (take (product (range 1 len)) (permutations xs)))
         , fuzz (constant []) "and [] is True" <|
             \xs ->
                 xs
