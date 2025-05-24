@@ -16,4 +16,8 @@ This library provides modules as follows:
     Expose all standard list functions except for `(::)` from `List` module,
     and provides many other utility functions on lists.
 
+    Extended toolbox for working with lists: everything from `elm/core`
+	`List` except for `(::)` plus Haskell-inspired helpers such as
+	`nub`, `intercalate`, and `groupBy`, all implemented the Elm way.
+
 
