@@ -24,6 +24,7 @@ module Data.List exposing
 `List` plus Haskell-inspired helpers such as `nub`, `intercalate`, and
 `groupBy`, all implemented the Elm way.
 
+
 # Definition
 
 [List](https://package.elm-lang.org/packages/elm/core/latest/List)
@@ -683,7 +684,7 @@ unsnoc list =
 
     null [ 1 ] == False
 
-Alias of `isEmpty`.
+Alias of [`isEmpty`](#isEmpty).
 
 -}
 null : List a -> Bool
@@ -869,7 +870,7 @@ permutations list =
 
 {-| Return the logical conjunction of a list of `Bool`s.
 
-Evaluation of this function stops at the first occurrence of True, and the result is True.
+Evaluation of this function stops at the first occurrence of `True`, and the result is `True`.
 
     and [] == True
 
@@ -892,7 +893,7 @@ and list =
 
 {-| Return the logical disjunction of a list of `Bool`s.
 
-Evaluation of this function stops at the first occurrence of True, and the result is True.
+Evaluation of this function stops at the first occurrence of `True`, and the result is `True`.
 
     or [] == False
 
@@ -921,11 +922,13 @@ or list =
 
     scanl f z [x1, x2, ...] == [z, f x1 z, f x2 (f x1 z), ...]
 
-Properties:
+
+## Properties
 
     last (scanl f z xs) == foldl f z xs
 
-Examples:
+
+## Examples
 
     scanl (+) 0 (List.range 1 4) == [ 0, 1, 3, 6, 10 ]
 
@@ -954,7 +957,8 @@ accumulating function are reversed compared to scanl. Also note that
 
     head (scanr f z xs) == foldr f z xs.
 
-Examples:
+
+## Examples
 
     scanr (+) 0 (List.range 1 4) == [ 10, 9, 7, 4, 0 ]
 
@@ -986,7 +990,7 @@ scanr f e list =
 -- Accumulating maps
 
 
-{-| Behaves like a combination of `map` and `foldl`; it applies a function to
+{-| Behaves like a combination of [`map`](#map) and [`foldl`](#foldl); it applies a function to
 each element of a list, passing an accumulating parameter from left to right,
 and returning a final value of this accumulator together with the new list.
 
@@ -1014,7 +1018,7 @@ mapAccumL f acc list =
             ( ccc, y :: ys )
 
 
-{-| Behaves like a combination of `map` and `foldr`; it applies a function to
+{-| Behaves like a combination of [`map`](#map) and [`foldr`](#foldr); it applies a function to
 each element of a list, passing an accumulating parameter from right to left,
 and returning a final value of this accumulator together with the new list.
 
@@ -1048,11 +1052,13 @@ mapAccumR f acc list =
 
 {-| `n` repeated applications `f` to `x`
 
-Properties:
+
+## Properties
 
     iterate n f x == [x, f x, f (f x), ...]
 
-Examples:
+
+## Examples
 
     iterate 3 ((+) 1) 0 == [ 0, 1, 2 ]
 
@@ -1066,7 +1072,7 @@ iterate n f x =
         x :: iterate (n - 1) f (f x)
 
 
-{-| Alias to `repeat`
+{-| Alias to [`repeat`](#repeat)
 -}
 replicate : Int -> a -> List a
 replicate =
@@ -1077,20 +1083,20 @@ replicate =
 -- Unfolding
 
 
-{-| A `dual' to`foldr`: while foldr reduces a list to a summary value,
+{-| A dual to [`foldr`](#foldr): while foldr reduces a list to a summary value,
 unfoldr builds a list from a seed value. The function takes the element
-and returns Nothing if it is done producing the list or returns`Just (a,b)`,
-in which case,`a`is a prepended to the list
-and`b\` is used as the next element in a recursive call.
+and returns `Nothing` if it is done producing the list or returns `Just (a,b)`,
+in which case, `a` is a prepended to the list
+and `b` is used as the next element in a recursive call.
 
 In some cases, unfoldr can undo a foldr operation:
 
-    unfoldr f' (foldr f z xs) == xs
+    unfoldr g (foldr f z xs) == xs
 
 if the following holds:
 
-    f' (f x y) = Just (x,y)
-    f' z       = Nothing
+    g (f x y) = Just (x,y)
+    g z       = Nothing
 
 For example:
 
@@ -1120,10 +1126,11 @@ unfoldr f e =
 -- Sublists
 
 
-{-| splitAt n xs returns a tuple where first element is xs prefix of length n
+{-| Return a tuple where first element is xs prefix of length n
 and second element is the remainder of the list:
 
-Examples:
+
+## Examples
 
     splitAt 6 (String.toList "Hello World!")
         == ( String.toList "Hello ", String.toList "World!" )
@@ -1159,10 +1166,11 @@ splitAt n list =
                 ( x :: ys, zs )
 
 
-{-| takeWhile, applied to a predicate p and a list xs, returns the longest
+{-| Applied to a predicate p and a list xs, returns the longest
 prefix (possibly empty) of xs of elements that satisfy p.
 
-Examples:
+
+## Examples
 
     takeWhile (\x -> x < 3) [ 1, 2, 3, 4, 1, 2, 3, 4 ] == [ 1, 2 ]
 
@@ -1185,9 +1193,10 @@ takeWhile p list =
                 []
 
 
-{-| Returns the suffix remaining after `takeWhile`
+{-| Returns the suffix remaining after [`takeWhile`](#takeWhile)
 
-Examples:
+
+## Examples
 
     dropWhile (\x -> x < 3) [ 1, 2, 3, 4, 5, 1, 2, 3 ] == [ 3, 4, 5, 1, 2, 3 ]
 
@@ -1213,7 +1222,8 @@ dropWhile p list =
 {-| Drops the largest suffix of a list in which the given predicate holds for
 all elements.
 
-Examples:
+
+## Examples
 
     let
         isSpace c =
@@ -1249,9 +1259,11 @@ dropWhileEnd p list =
 
 
 {-| Returns a tuple where first element is the longest prefix (possibly empty)
-of xs of elements that satisfy p and second element is the remainder of the list.
+of xs of elements that satisfy p and second element is the remainder of the
+list.
 
-Examples:
+
+## Examples
 
     span (\x -> x < 3) [ 1, 2, 3, 4, 1, 2, 3, 4 ] == ( [ 1, 2 ], [ 3, 4, 1, 2, 3, 4 ] )
 
@@ -1279,15 +1291,18 @@ span p list =
 
 
 {-| Returns a tuple where first element is longest prefix (possibly empty)
-of xs of elements that do not satisfy p and second element is the remainder of the list:
+of xs of elements that do not satisfy p and second element is the remainder of
+the list:
 
-Properties:
+
+## Properties
 
     break p
         == span (not << p)
         == ( takeWhile (not << p) xs, dropWhile (not << p) xs )
 
-Examples:
+
+## Examples
 
     break (\x -> x > 3) [ 1, 2, 3, 4, 1, 2, 3, 4 ] == ( [ 1, 2, 3 ], [ 4, 1, 2, 3, 4 ] )
 
@@ -1317,15 +1332,20 @@ break p list =
 {-| Drops the given prefix from a list. It returns Nothing if the list did not
 start with the prefix given, or Just the list after the prefix, if it does.
 
-Examples:
 
-    stripPrefix (String.toList "foo") (String.toList "foobar") == Just (String.toList "bar")
+## Examples
 
-    stripPrefix (String.toList "foo") (String.toList "foo") == Just (String.toList "")
+    stripPrefix (String.toList "foo") (String.toList "foobar")
+        == Just (String.toList "bar")
 
-    stripPrefix (String.toList "foo") (String.toList "barfoo") == Nothing
+    stripPrefix (String.toList "foo") (String.toList "foo")
+        == Just (String.toList "")
 
-    stripPrefix (String.toList "foo") (String.toList "barfoobaz") == Nothing
+    stripPrefix (String.toList "foo") (String.toList "barfoo")
+        == Nothing
+
+    stripPrefix (String.toList "foo") (String.toList "barfoobaz")
+        == Nothing
 
 -}
 stripPrefix : List a -> List a -> Maybe (List a)
@@ -1350,10 +1370,11 @@ the result is equal to the argument. Moreover, each sublist in the result is
 non-empty, all elements are equal to the first one, and consecutive equal
 elements of the input end up in the same element of the output list.
 
-`group` is a special case of `groupBy`, which allows the programmer to supply
+`group` is a special case of [`groupBy`](#groupBy), which allows the programmer to supply
 their own equality test.
 
-Examples:
+
+## Examples
 
     group (String.toList "Mississippi")
         |> map String.fromList
@@ -1388,9 +1409,11 @@ inits is semantically equivalent to
 
 , but under the hood uses a queue to amortize costs of reverse.
 
-Examples:
 
-    inits (String.toList "abc") |> map String.fromList == [ "", "a", "ab", "abc" ]
+## Examples
+
+    inits (String.toList "abc") |> map String.fromList
+        == [ "", "a", "ab", "abc" ]
 
     inits [] == [ [] ]
 
@@ -1405,11 +1428,12 @@ inits list =
             [] :: map ((::) x) (inits xs)
 
 
-{-| The tails function returns all final segments of the argument, longest first.
+{-| Returns all final segments of the argument, longest first.
 
-Examples:
+## Examples
 
-    tails (String.toList "abc") |> map String.fromList == [ "abc", "bc", "c", "" ]
+    tails (String.toList "abc") |> map String.fromList
+        == [ "abc", "bc", "c", "" ]
 
     tails [ 1, 2, 3 ] == [ [ 1, 2, 3 ], [ 2, 3 ], [ 3 ], [] ]
 
@@ -1430,10 +1454,11 @@ tails list =
 -- Predicates
 
 
-{-| Takes two lists and returns True iff the first
-list is a prefix of the second.
+{-| Takes two lists and returns True iff the first list is a prefix of the
+second.
 
-Examples:
+
+## Examples
 
     isPrefixOf (String.toList "Hello") (String.toList "Hello World!") == True
 
@@ -1461,10 +1486,11 @@ isPrefixOf prefix list =
                 False
 
 
-{-| Takes two lists and returns True iff the first
+{-| Takes two lists and returns `True` iff the first
 list is a suffix of the second.
 
-Examples:
+
+## Examples
 
     isSuffixOf (String.toList "ld!") (String.toList "Hello World!") == True
 
@@ -1480,14 +1506,17 @@ isSuffixOf suffix list =
     isPrefixOf (reverse suffix) rlist
 
 
-{-| Takes two lists and returns True iff the first list is contained,
+{-| Takes two lists and returns `True` iff the first list is contained,
 wholly and intact, anywhere within the second.
 
-Examples:
 
-    isInfixOf (String.toList "Haskell") (String.toList "I really like Haskell.") == True
+## Examples
 
-    isInfixOf (String.toList "Ial") (String.toList "I really like Haskell.") == False
+    isInfixOf (String.toList "Haskell")
+        (String.toList "I really like Haskell.") == True
+
+    isInfixOf (String.toList "Ial")
+        (String.toList "I really like Haskell.") == False
 
 -}
 isInfixOf : List a -> List a -> Bool
@@ -1502,10 +1531,11 @@ isInfixOf xs list =
            )
 
 
-{-| Returns True if all the elements of the first list occur, in order,
+{-| Returns `True` if all the elements of the first list occur, in order,
 in the second. The elements do not have to occur consecutively.
 
-Properties:
+
+## Properties
 
     isSubsequenceOf x y == elem x (subsequences y)
 
@@ -1513,7 +1543,8 @@ Note:
 
     isSubsequenceOf is often used in infix form.
 
-Examples:
+
+## Examples
 
     isSubsequenceOf (String.toList "GHC")
         (String.toList "The Glorious Haskell Compiler") == True
@@ -1548,7 +1579,8 @@ Note:
 
     elem is often used in infix form.
 
-Examples:
+
+## Examples
 
     elem 3 [] == False
 
@@ -1564,7 +1596,8 @@ elem =
 
 {-| The negation of `elem`.
 
-Examples:
+
+## Examples
 
     notElem 3 [] == True
 
@@ -1585,13 +1618,15 @@ notElem a list =
 
 {-| Looks up the value associated with the key in an association list.
 
-Examples:
+
+## Examples
 
     lookup 2 [] == Nothing
 
     lookup 2 [ ( 1, "first" ) ] == Nothing
 
-    lookup 2 [ ( 1, "first" ), ( 2, "second" ), ( 3, "third" ) ] == Just "second"
+    lookup 2 [ ( 1, "first" ), ( 2, "second" ), ( 3, "third" ) ]
+        == Just "second"
 
 -}
 lookup : a -> List ( a, b ) -> Maybe b
@@ -1611,7 +1646,8 @@ lookup v list =
 {-| Returns the leftmost element of the list matching the predicate,
 or Nothing if there is no such element.
 
-Examples:
+
+## Examples
 
     find (\x -> x > 42) [ 5, 10, 15, 20, 25, 30, 35, 40, 45, 50 ] == Just 45
 
@@ -1633,9 +1669,10 @@ find p list =
 
 
 {-| Returns the index of the first element in the given list which is equal to
-the query element, or Nothing if there is no such element.
+the query element, or `Nothing` if there is no such element.
 
-Examples:
+
+## Examples
 
     elemIndex 4 (range 0 10) == Just 4
 
@@ -1660,9 +1697,11 @@ elemIndex a list =
     go 0 list
 
 
-{-| Extends `elemIndex`, the indicies of all elements equal to the query element, in ascending order.
+{-| Extends `elemIndex`, the indicies of all elements equal to the query
+element, in ascending order.
 
-Examples:
+
+## Examples
 
     elemIndices 'o' (String.toList "Hello World") == [ 4, 7 ]
 
@@ -1690,7 +1729,8 @@ elemIndicies a list =
 {-| Returns the index of the first element in the list satisfying the predicate,
 or Nothing if there is no such element.
 
-Examples:
+
+## Examples
 
     let
         isSpace c =
@@ -1724,7 +1764,8 @@ findIndex p list =
 {-| Extends `findIndex`, by returning the indices of all elements satisfying
 the predicate, in ascending order.
 
-Examples:
+
+## Examples
 
     findIndices (\x -> elem x (String.toList "aeiou"))
         (String.toList "Hello World!")
@@ -1759,7 +1800,8 @@ findIndices p list =
 
 {-| Returns a list of corresponding pairs.
 
-Examples:
+
+## Examples
 
     zip [ 1, 2, 3 ] [ 'a', 'b', 'c' ] == [ ( 1, 'a' ), ( 2, 'b' ), ( 3, 'c' ) ]
 
@@ -1780,14 +1822,15 @@ zip xs ys =
     zipWith Tuple.pair xs ys
 
 
-{-| Returns a list of triples, analogous to zip.
+{-| Returns a list of triples, analogous to [`zip`](#zip).
 -}
 zip3 : List a -> List b -> List c -> List ( a, b, c )
 zip3 xs ys zs =
     zipWith3 (\x y z -> ( x, y, z )) xs ys zs
 
 
-{-| generalises zip by zipping with the function given as the first argument, instead of a tupling function.
+{-| generalises zip by zipping with the function given as the first argument,
+instead of a tupling function.
 
     zipWith (,) xs ys == zip xs ys
     zipWith f [x1,x2,x3..] [y1,y2,y3..] == [f x1 y1, f x2 y2, f x3 y3..]
@@ -1800,11 +1843,13 @@ zipWith is right-lazy:
     in
     zipWith bot [] [ () ] == []
 
-Examples:
+
+## Examples
 
     zipWith (+) [ 1, 2, 3 ] [ 4, 5, 6 ] == [ 5, 7, 9 ]
 
-    zipWith (++) [ "hello ", "foo" ] [ "world!", "bar" ] == [ "hello world!", "foobar" ]
+    zipWith (++) [ "hello ", "foo" ] [ "world!", "bar" ]
+        == [ "hello world!", "foobar" ]
 
 -}
 zipWith : (a -> b -> c) -> List a -> List b -> List c
@@ -1818,14 +1863,15 @@ zipWith f xs ys =
 
 
 {-| Combines three elements, as well as three lists and returns a list of the
-function applied to corresponding elements, analogous to zipWith.
+function applied to corresponding elements, analogous to [`zipWith`](#zipWith).
 
     zipWith3 (\x y z -> ( x, y, z )) xs ys zs == zip3 xs ys zs
 
     zipWith3 f [ x1, x2, x3 ] [ y1, y2, y3 ] [ z1, z2, z3 ]
         == [ f x1 y1 z1, f x2 y2 z2, f x3 y3 z3 ]
 
-Examples:
+
+## Examples
 
     zipWith3 (\x y z -> [ x, y, z ])
         (String.toList "123")
@@ -1852,9 +1898,10 @@ zipWith3 f xs ys zs =
 
 
 {-| Takes a list of triples and returns three lists of the respective
-components, analogous to `unzip`.
+components, analogous to [`unzip`](#unzip).
 
-Examples:
+
+## Examples
 
     unzip3 [] == ( [], [], [] )
 
@@ -1883,18 +1930,19 @@ unzip3 list =
 {-| Remove duplicate elements from a list. In particular, it keeps only the
 first occurrence of each element. (The name nub means \`essence'.)
 
-This is a special case of [`nubBy`](#nubBy), which allows the programmer to supply their
-own equality test.
+This is a special case of [`nubBy`](#nubBy), which allows the programmer to
+supply their own equality test.
 
 Performance: `nub` runs in _O(n^2)_ time because it compares each element with
 all preceding ones. If you do not need to preserve the original order and
-elements are `comparable`, you can get \*O(nlogn)\*\* with:
+elements are `comparable`, you can get _O(nlogn)_ with:
 
     filterMap head << group << sort`
 
 The result will be sorted rather than in the original order.
 
-Examples:
+
+## Examples
 
     nub [ 1, 2, 3, 4, 3, 2, 1, 2, 4, 3, 5 ] == [ 1, 2, 3, 4, 5 ]
 
@@ -1910,7 +1958,8 @@ nub =
 It is a special case of deleteBy, which allows the programmer to supply their
 own equality test.
 
-Examples:
+
+## Examples
 
     delete 'a' (String.toList "banana") |> String.fromList == "bnana"
 
@@ -1924,12 +1973,13 @@ delete =
 
 {-| List difference (non-associative). In the result of delete xs ys, the
 first occurrence of each element of ys in turn (if any) has been removed
-from xs. Thus delete (xs ++ ys) xs == ys.
+from xs. Thus `delete (xs ++ ys) xs == ys`.
 
-It is a special case of `deleteFirstsBy`, which allows the programmer to
-supply their own equality test.
+It is a special case of [`deleteFirstsBy`](#deleteFirstsBy), which allows the
+programmer to supply their own equality test.
 
-Examples:
+
+## Examples
 
     delete (String.toList "Hello World!") (String.toList "ell W")
         |> String.fromList
@@ -1941,10 +1991,12 @@ deleteFirsts =
     deleteFirstsBy (==)
 
 
-{-| Returns the list union of the two lists. It is a special case of `unionBy`,
-which allows the programmer to supply their own equality test.
+{-| Returns the list union of the two lists. It is a special case of
+[`unionBy`](#unionBy), which allows the programmer to supply their own
+equality test.
 
-Examples:
+
+## Examples
 
     union (String.toList "dog") (String.toList "cow")
         |> String.fromList
@@ -1969,9 +2021,11 @@ union =
 
 
 {-| Takes the list intersection of two lists. It is a special case of
-`intersectBy`, which allows the programmer to supply their own equality test.
+[`intersectBy`](#intersectBy), which allows the programmer to supply their own
+equality test.
 
-Examples:
+
+## Examples
 
     intersect [ 1, 2, 3, 4 ] [ 2, 4, 6, 8 ] == [ 2, 4 ]
 
@@ -2005,7 +2059,8 @@ decorate-sort-undecorate paradigm, or Schwartzian transform.
 Elements are arranged from lowest to highest, keeping duplicates in the
 order they appeared in the input.
 
-Examples:
+
+## Examples
 
     sortOn Tuple.first [ ( 2, "world" ), ( 4, "!" ), ( 1, "Hello" ) ]
         == [ ( 1, "Hello" ), ( 2, "world" ), ( 4, "!" ) ]
@@ -2022,9 +2077,11 @@ sortOn =
 {-| Inserts an element into a list at the first position where it is less
 than or equal to the next element. In particular, if the list is sorted
 before the call, the result will also be sorted. It is a special case of
-`insertBy`, which allows the programmer to supply their own comparison function.
+[`insertBy`](#insertBy), which allows the programmer to supply their own
+comparison function.
 
-Examples:
+
+## Examples
 
     insert -1 [ 1, 2, 3 ] == [ -1, 1, 2, 3 ]
 
@@ -2053,7 +2110,8 @@ insert a list =
 
 {-| Behaves just like `nub`, except it uses a user-supplied equality predicate.
 
-Examples:
+
+## Examples
 
     nubBy (\x y -> modBy 3 x == modBy 3 y) [ 1, 2, 4, 5, 6 ] == [ 1, 2, 6 ]
 
@@ -2072,9 +2130,11 @@ nubBy f list =
             x :: nubBy f (filter (not << f x) xs)
 
 
-{-| Behaves like `delete`, but takes a user-supplied equality predicate.
+{-| Behaves like [`delete`](#delete), but takes a user-supplied equality
+predicate.
 
-Examples:
+
+## Examples
 
     deleteBy (<=) 4 (range 1 10) == [ 1, 2, 3, 5, 6, 7, 8, 9, 10 ]
 
@@ -2100,7 +2160,8 @@ the second list removed.
 
     deleteFirsts == deleteFirstsBy (==)
 
-Examples:
+
+## Examples
 
     deleteFirstsBy (>) (range 1 10) [ 3, 4, 5 ] == [ 4, 5, 6, 7, 8, 9, 10 ]
 
@@ -2146,7 +2207,8 @@ will be retained:
     unionBy eq [Arg () "dog"] [Arg () "cow"] == [Arg () "dog"]
     unionBy eq [] [Arg () "dog", Arg () "cow"] == [Arg () "dog"]
 
-Examples:
+
+## Examples
 
     unionBy (>) [ 3, 4, 5 ] [ 1, 2, 3, 4, 5, 6 ] == [ 3, 4, 5, 4, 5, 6 ]
 
@@ -2193,7 +2255,8 @@ nearest neighbour:
            , [ 15, 16, 17, 18, 19 ]
            ]
 
-Examples:
+
+## Examples
 
     groupBy (/=) [1, 1, 1, 2, 3, 1, 4, 4, 5
         == [[1],[1],[1,2,3],[1,4,4,5]]
@@ -2252,7 +2315,8 @@ sortBy =
 
 {-| Insert a value into a list using the given ordering function.
 
-Examples:
+
+## Examples
 
     insertBy (\x y -> compare (length x) (length y))
         [ 1, 2 ]
@@ -2282,7 +2346,8 @@ insertBy cmp a list =
 comparison function. If there are multiple largest elements, the rightmost
 of them is chosen.
 
-Examples:
+
+## Examples
 
     maximumBy (\x y -> compare (String.length x) (String.length y))
         [ "Hello", "World", "!", "Longest", "bar" ]
@@ -2316,7 +2381,8 @@ maximumBy cmp list =
 comparison function. If there are multiple least elements, the leftmost
 of them is chosen.
 
-Examples:
+
+## Examples
 
     minimumBy (\x y -> compare (String.length x) (String.length y))
         [ "Hello", "World", "!", "Longest", "bar" ]
@@ -2349,7 +2415,8 @@ minimumBy cmp list =
 {-| An overloaded version of `length`. In particular, instead of returning an
 `Int`, it returns `Float` type.
 
-Examples:
+
+## Examples
 
     (genericLength [ 1, 2, 3 ] == 3) == True
 
