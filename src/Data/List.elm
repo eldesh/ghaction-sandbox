@@ -11,7 +11,7 @@ module Data.List exposing
     , isPrefixOf, isSuffixOf, isInfixOf, isSubsequenceOf
     , elem, notElem, lookup, member
     , find, filter, partition
-    , elemIndex, elemIndicies, findIndex, findIndices
+    , elemIndex, elemIndices, findIndex, findIndices
     , zip, zip3, zipWith, zipWith3, unzip, unzip3
     , nub, delete, deleteFirsts, union, intersect
     , sort, sortOn, insert
@@ -20,8 +20,8 @@ module Data.List exposing
     , genericLength
     )
 
-{-| An extended toolbox for working with lists: everything from `elm/core`
-`List` plus Haskell-inspired helpers such as `nub`, `intercalate`, and
+{-| An extended toolbox for working with lists: everything from the `elm/core`
+`List` module plus Haskell-inspired helpers such as `nub`, `intercalate`, and
 `groupBy`, all implemented the Elm way.
 
 
@@ -92,7 +92,7 @@ module Data.List exposing
 
 # Indexing lists
 
-@docs elemIndex, elemIndicies, findIndex, findIndices
+@docs elemIndex, elemIndices, findIndex, findIndices
 
 
 # Zipping and unzipping lists
@@ -578,11 +578,11 @@ unzip =
 
 
 
--- Extentions
+-- Extensions
 
 
-{-| Get the last element of a list.
-Returns `Just` the element if the list is non-empty, or `Nothing` when the list is empty.
+{-| Get the last element of a list. Return `Just` the element if the list is
+non-empty, or `Nothing` when the list is empty.
 
     last [ 1, 2, 3 ] == Just 3
 
@@ -699,7 +699,7 @@ null list =
 
 {-| Compare the length of a list with an integer.
 
-Returns `GT` if the list is longer, `LT` if shorter, `EQ` if equal.
+Return `GT` if the list is longer, `LT` if shorter, `EQ` if equal.
 Any positive-length list is `GT` for a negative integer.
 
     compareLength [ 1, 2, 3 ] 2 == GT
@@ -765,7 +765,7 @@ intercalate xs xxs =
             (ys ++ xs) ++ intercalate xs yys
 
 
-{-| Transpose transpose the rows and columns of the argument list of lists.
+{-| Transpose the rows and columns of the argument list of lists.
 
     transpose [ [ 1, 2, 3 ], [ 4, 5, 6 ] ] == [ [ 1, 4 ], [ 2, 5 ], [ 3, 6 ] ]
 
@@ -798,7 +798,7 @@ transpose list =
     filter isNotEmpty (go list)
 
 
-{-| Returns the list of all subsequences of the argument.
+{-| Return the list of all subsequences of the argument.
 
     let
         s =
@@ -821,14 +821,18 @@ subsequences list =
             append (map (\s -> x :: s) ss) ss
 
 
-{-| Returns the list of all permutations of the argument.
+{-| Return the list of all permutations of the argument.
 Note that the order of permutations is not lexicographic.
 
-It satisfies the following property:
+
+## Properties
 
     map (take n)
         (take (product (List.range 1 n)) (permutations (List.range 1 n)))
         == permutations (range 1 n)
+
+
+## Examples
 
     permutations [ 1, 2 ] == [ [ 1, 2 ], [ 2, 1 ] ]
 
@@ -1193,7 +1197,7 @@ takeWhile p list =
                 []
 
 
-{-| Returns the suffix remaining after [`takeWhile`](#takeWhile)
+{-| Return the suffix remaining after [`takeWhile`](#takeWhile)
 
 
 ## Examples
@@ -1258,7 +1262,7 @@ dropWhileEnd p list =
     go [] [] list
 
 
-{-| Returns a tuple where first element is the longest prefix (possibly empty)
+{-| Return a tuple where first element is the longest prefix (possibly empty)
 of xs of elements that satisfy p and second element is the remainder of the
 list.
 
@@ -1290,7 +1294,7 @@ span p list =
     go [] list
 
 
-{-| Returns a tuple where first element is longest prefix (possibly empty)
+{-| Return a tuple where first element is longest prefix (possibly empty)
 of xs of elements that do not satisfy p and second element is the remainder of
 the list:
 
@@ -1365,9 +1369,9 @@ stripPrefix xs ys =
                 Nothing
 
 
-{-| Returns a list of lists such that the concatenation of
-the result is equal to the argument. Moreover, each sublist in the result is
-non-empty, all elements are equal to the first one, and consecutive equal
+{-| Return a list of lists such that the concatenation of the result is equal
+to the argument. Moreover, each sublist in the result is non-empty,
+all elements are equal to the first one, and consecutive equal
 elements of the input end up in the same element of the output list.
 
 `group` is a special case of [`groupBy`](#groupBy), which allows the programmer to supply
@@ -1402,7 +1406,7 @@ group list =
                         [ x ] :: ys :: yss
 
 
-{-| Returns all initial segments of the argument, shortest first.
+{-| Return all initial segments of the argument, shortest first.
 inits is semantically equivalent to
 
     map reverse . scanl (flip (:)) []
@@ -1412,7 +1416,8 @@ inits is semantically equivalent to
 
 ## Examples
 
-    inits (String.toList "abc") |> map String.fromList
+    inits (String.toList "abc")
+        |> map String.fromList
         == [ "", "a", "ab", "abc" ]
 
     inits [] == [ [] ]
@@ -1428,11 +1433,13 @@ inits list =
             [] :: map ((::) x) (inits xs)
 
 
-{-| Returns all final segments of the argument, longest first.
+{-| Return all final segments of the argument, longest first.
+
 
 ## Examples
 
-    tails (String.toList "abc") |> map String.fromList
+    tails (String.toList "abc")
+        |> map String.fromList
         == [ "abc", "bc", "c", "" ]
 
     tails [ 1, 2, 3 ] == [ [ 1, 2, 3 ], [ 2, 3 ], [ 3 ], [] ]
@@ -1513,10 +1520,12 @@ wholly and intact, anywhere within the second.
 ## Examples
 
     isInfixOf (String.toList "Haskell")
-        (String.toList "I really like Haskell.") == True
+        (String.toList "I really like Haskell.")
+        == True
 
     isInfixOf (String.toList "Ial")
-        (String.toList "I really like Haskell.") == False
+        (String.toList "I really like Haskell.")
+        == False
 
 -}
 isInfixOf : List a -> List a -> Bool
@@ -1531,7 +1540,7 @@ isInfixOf xs list =
            )
 
 
-{-| Returns `True` if all the elements of the first list occur, in order,
+{-| Return `True` if all the elements of the first list occur, in order,
 in the second. The elements do not have to occur consecutively.
 
 
@@ -1643,8 +1652,8 @@ lookup v list =
                 lookup v abs
 
 
-{-| Returns the leftmost element of the list matching the predicate,
-or Nothing if there is no such element.
+{-| Return the leftmost element of the list matching the predicate,
+or `Nothing` if there is no such element.
 
 
 ## Examples
@@ -1668,7 +1677,7 @@ find p list =
                 find p xs
 
 
-{-| Returns the index of the first element in the given list which is equal to
+{-| Return the index of the first element in the given list which is equal to
 the query element, or `Nothing` if there is no such element.
 
 
@@ -1697,8 +1706,8 @@ elemIndex a list =
     go 0 list
 
 
-{-| Extends `elemIndex`, the indicies of all elements equal to the query
-element, in ascending order.
+{-| Return the indicies of all elements equal to the query element, in
+ascending order.
 
 
 ## Examples
@@ -1708,8 +1717,8 @@ element, in ascending order.
     elemIndices 1 [ 1, 2, 3, 1, 2, 3 ] == [ 0, 3 ]
 
 -}
-elemIndicies : a -> List a -> List Int
-elemIndicies a list =
+elemIndices : a -> List a -> List Int
+elemIndices a list =
     let
         go n xs =
             case xs of
@@ -1726,8 +1735,8 @@ elemIndicies a list =
     go 0 list
 
 
-{-| Returns the index of the first element in the list satisfying the predicate,
-or Nothing if there is no such element.
+{-| Return the index of the first element in the list satisfying the predicate,
+or `Nothing` if there is no such element.
 
 
 ## Examples
@@ -1798,7 +1807,7 @@ findIndices p list =
 -- Zipping and unzipping lists
 
 
-{-| Returns a list of corresponding pairs.
+{-| Return a list of corresponding pairs.
 
 
 ## Examples
@@ -1822,7 +1831,7 @@ zip xs ys =
     zipWith Tuple.pair xs ys
 
 
-{-| Returns a list of triples, analogous to [`zip`](#zip).
+{-| Return a list of triples, analogous to [`zip`](#zip).
 -}
 zip3 : List a -> List b -> List c -> List ( a, b, c )
 zip3 xs ys zs =
@@ -1991,7 +2000,7 @@ deleteFirsts =
     deleteFirstsBy (==)
 
 
-{-| Returns the list union of the two lists. It is a special case of
+{-| Return the list union of the two lists. It is a special case of
 [`unionBy`](#unionBy), which allows the programmer to supply their own
 equality test.
 
@@ -2155,8 +2164,11 @@ deleteBy f a list =
                 x :: deleteBy f a xs
 
 
-{-| Returns the first list with the first occurrence of each element of
+{-| Return the first list with the first occurrence of each element of
 the second list removed.
+
+
+## Properties
 
     deleteFirsts == deleteFirstsBy (==)
 
@@ -2196,7 +2208,7 @@ isJust x =
             True
 
 
-{-| Returns the list union of the two lists using given equality function.
+{-| Return the list union of the two lists using given equality function.
 
 If equal elements are present in both lists, an element from the first list
 will be used. If the second list contains equal elements, only the first one
@@ -2218,7 +2230,7 @@ unionBy f alist blist =
     alist ++ foldl (deleteBy f) (nubBy f blist) alist
 
 
-{-| Takes the list intersection of two lists using given equality function.
+{-| Return the list intersection of two lists using given equality function.
 
 If equal elements are present in both lists, an element from the first list
 will be used, and all duplicates from the second list quashed:
