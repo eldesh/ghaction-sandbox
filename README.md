@@ -22,6 +22,11 @@ combinator functions while following Elm’s design principles.
     `List` except for `(::)` plus Haskell-inspired helpers such as
     `nub`, `intercalate`, and `groupBy`, all implemented the Elm way.
 
+- Data.Maybe
+
+    Expose all standard maybe functions from `Maybe` module,
+    and provides many other utility functions on maybes.
+
 - Data.Ord
 
     Utilities working on comparable values.
