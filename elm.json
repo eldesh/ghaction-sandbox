@@ -5,6 +5,7 @@
     "license": "MIT",
     "version": "1.0.0",
     "exposed-modules": [
+        "Data.Function",
         "Data.List",
         "Data.Ord"
     ],
