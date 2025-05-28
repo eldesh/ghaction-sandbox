@@ -5,10 +5,13 @@
 Its goal is to offer additional data-structure utilities and
 combinator functions while following Elm’s design principles.
 
-> [!NOTE]
-> Only the `Data.List` module is currently implemented.
-
 ## Modules
+
+- Data.Function
+
+    Small but handy combinators for building and transforming functions.
+    These helpers make it easy to compose complex behaviour on the spot,
+    so you can avoid writing ad‑hoc lambdas or intermediate definitions.
 
 - Data.List
 
@@ -16,7 +19,10 @@ combinator functions while following Elm’s design principles.
     and provides many other utility functions on lists.
 
     Extended toolbox for working with lists: everything from `elm/core`
-	`List` except for `(::)` plus Haskell-inspired helpers such as
-	`nub`, `intercalate`, and `groupBy`, all implemented the Elm way.
+    `List` except for `(::)` plus Haskell-inspired helpers such as
+    `nub`, `intercalate`, and `groupBy`, all implemented the Elm way.
 
+- Data.Ord
+
+    Utilities working on comparable values.
 
