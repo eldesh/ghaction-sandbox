@@ -27,7 +27,7 @@ module Data.List exposing
 
 # Definition
 
-[List](https://package.elm-lang.org/packages/elm/core/latest/List)
+[List](https://package.elm-lang.org/packages/elm/core/1.0.5/List)
 
 
 # Basic functions
