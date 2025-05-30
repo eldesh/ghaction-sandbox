@@ -31,3 +31,9 @@ combinator functions while following Elm’s design principles.
 
     Utilities working on comparable values.
 
+- Data.Result
+
+    Expose all standard functions from `Result` module,
+    and provides many other utility functions on results.
+
+
