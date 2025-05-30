@@ -1,7 +1,7 @@
 module Data.Result exposing
-    ( withDefault, fromMaybe, isOk, isErr, apply
+    ( withDefault, fromMaybe, isOk, isErr
     , map, map2, map3, map4, map5, ok, err, fromOk, fromErr, toList, catOks, catErrs, partition
-    , andThen
+    , andThen, and, or, apply
     )
 
 {-| An extended toolbox for working with results: everything from the `elm/core`
@@ -16,7 +16,7 @@ module Data.Result exposing
 
 # Common Helpers
 
-@docs withDefault, fromMaybe, isOk, isErr, apply
+@docs withDefault, fromMaybe, isOk, isErr
 
 
 # Result transformations
@@ -24,9 +24,9 @@ module Data.Result exposing
 @docs map, map2, map3, map4, map5, ok, err, fromOk, fromErr, toList, catOks, catErrs, partition
 
 
-# Chaining Maybes
+# Chaining Results
 
-@docs andThen
+@docs andThen, and, or, apply
 
 -}
 
@@ -323,6 +323,42 @@ catErrs xs =
 
         (Ok _) :: ys ->
             catErrs ys
+
+
+{-| Return second argument if first argument is `Ok`, otherwise first.
+
+    and (Ok 2)              (Err "late error")    == Err "late error"
+    and (Err "early error") (Ok "foo")            == Err "early error"
+    and (Err "not a 2")     (Err "late error")    == Err "not a 2"
+    and (Ok 2)              (Ok "different type") == Ok "different type"
+
+-}
+and : Result e a -> Result e a -> Result e a
+and r1 r2 =
+    case r1 of
+        Ok _ ->
+            r2
+
+        Err _ ->
+            r1
+
+
+{-| Return first argument if it is `Ok`, otherwise second.
+
+    or (Ok 2)              (Err "late error") == Ok 2
+    or (Err "early error") (Ok 2)             == Ok 2
+    or (Err "not a 2")     (Err "late error") == Err "late error"
+    or (Ok 2)              (Ok 100)           == Ok 2
+
+-}
+or : Result e a -> Result e a -> Result e a
+or r1 r2 =
+    case r1 of
+        Ok _ ->
+            r1
+
+        Err _ ->
+            r2
 
 
 {-| Chain together a sequence of computations that may fail. It is helpful
