@@ -273,8 +273,8 @@ Basic usage:
 One can use maybeToList to avoid pattern matching when combined with a function that (safely) works on lists:
 
     from Data.List import sum
-    (sum <| maybeToList (String.toInt "3")) == 3
-    (sum <| maybeToList (String.toInt "")) == 0
+    (sum <| maybeToList <| String.toInt "3") == 3
+    (sum <| maybeToList <| String.toInt "") == 0
 
 -}
 maybeToList : Maybe a -> List a
