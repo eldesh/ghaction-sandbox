@@ -1,6 +1,6 @@
 module Data.Result exposing
     ( withDefault, fromMaybe, isOk, isErr
-    , map, map2, map3, map4, map5, ok, err, fromOk, fromErr, toList, catOks, catErrs, partition
+    , map, map2, map3, map4, map5, ok, err, fromOk, fromErr, toList, catOks, catErrs, partition, fold
     , andThen, and, or, apply
     )
 
@@ -21,7 +21,7 @@ module Data.Result exposing
 
 # Result transformations
 
-@docs map, map2, map3, map4, map5, ok, err, fromOk, fromErr, toList, catOks, catErrs, partition
+@docs map, map2, map3, map4, map5, ok, err, fromOk, fromErr, toList, catOks, catErrs, partition, fold
 
 
 # Chaining Results
@@ -470,3 +470,24 @@ apply rf rv =
 
         ( Err e, _ ) ->
             Err e
+
+
+{-| Apply the first function to the given value inside `Err` or the second
+function to the value inside `Ok`.
+
+
+## Examples
+
+    fold (\e -> "Error: " ++ e) String.toUpper (Ok "elm") == "ELM"
+
+    fold (\e -> "Error: " ++ e) String.toUpper (Err "fail") == "Error: fail"
+
+-}
+fold : (e -> c) -> (a -> c) -> Result e a -> c
+fold ec ac r =
+    case r of
+        Ok a ->
+            ac a
+
+        Err e ->
+            ec e
