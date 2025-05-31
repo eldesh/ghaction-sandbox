@@ -55,11 +55,6 @@ uncurry f ( a, b ) =
     f a b
 
 
-flip : (a -> b -> c) -> b -> a -> c
-flip f x y =
-    f y x
-
-
 suite : Test
 suite =
     describe "Extentions"
@@ -260,7 +255,7 @@ suite =
                 group xs
                     |> Data.List.concat
                     |> Expect.equal xs
-        , fuzz (list int) "inits xs == map reverse << scanl (flip (::)) [] <| xs" <|
+        , fuzz (list int) "inits xs == map reverse << scanl (::) [] <| xs" <|
             \xs ->
                 inits xs
                     |> Expect.equal (map reverse << scanl (::) [] <| xs)
