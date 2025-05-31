@@ -156,7 +156,8 @@ isErr r =
 {-| Apply a function to a result. If the result is `Ok`, it will be converted.
 If the result is an `Err`, the same error value will propagate through.
 
-    map sqrt (Ok 4.0)          == Ok 2.0
+    map sqrt (Ok 4.0) == Ok 2.0
+
     map sqrt (Err "bad input") == Err "bad input"
 
 -}
@@ -168,9 +169,12 @@ map =
 {-| Apply a function if both results are `Ok`. If not, the first `Err` will
 propagate through.
 
-    map2 max (Ok 42)   (Ok 13)   == Ok 42
-    map2 max (Err "x") (Ok 13)   == Err "x"
-    map2 max (Ok 42)   (Err "y") == Err "y"
+    map2 max (Ok 42) (Ok 13) == Ok 42
+
+    map2 max (Err "x") (Ok 13) == Err "x"
+
+    map2 max (Ok 42) (Err "y") == Err "y"
+
     map2 max (Err "x") (Err "y") == Err "x"
 
 This can be useful if you have two computations that may fail, and you want
@@ -240,17 +244,19 @@ Basic usage:
 
 One can use maybeToList to avoid pattern matching when combined with a function that (safely) works on lists:
 
-    (sum
-        <| toList
-        <| fromMaybe "parse error"
-        <| String.toInt "3")
-    == 3
+    (sum <|
+        toList <|
+            fromMaybe "parse error" <|
+                String.toInt "3"
+    )
+        == 3
 
-    (sum
-        <| toList
-        <| fromMaybe "parse error"
-        <| String.toInt "")
-    == 0
+    (sum <|
+        toList <|
+            fromMaybe "parse error" <|
+                String.toInt ""
+    )
+        == 0
 
 -}
 toList : Result e a -> List a
@@ -327,10 +333,13 @@ catErrs xs =
 
 {-| Return second argument if first argument is `Ok`, otherwise first.
 
-    and (Ok 2)              (Err "late error")    == Err "late error"
-    and (Err "early error") (Ok "foo")            == Err "early error"
-    and (Err "not a 2")     (Err "late error")    == Err "not a 2"
-    and (Ok 2)              (Ok "different type") == Ok "different type"
+    and (Ok 2) (Err "late error") == Err "late error"
+
+    and (Err "early error") (Ok "foo") == Err "early error"
+
+    and (Err "not a 2") (Err "late error") == Err "not a 2"
+
+    and (Ok 2) (Ok "different type") == Ok "different type"
 
 -}
 and : Result e a -> Result e a -> Result e a
@@ -345,10 +354,13 @@ and r1 r2 =
 
 {-| Return first argument if it is `Ok`, otherwise second.
 
-    or (Ok 2)              (Err "late error") == Ok 2
-    or (Err "early error") (Ok 2)             == Ok 2
-    or (Err "not a 2")     (Err "late error") == Err "late error"
-    or (Ok 2)              (Ok 100)           == Ok 2
+    or (Ok 2) (Err "late error") == Ok 2
+
+    or (Err "early error") (Ok 2) == Ok 2
+
+    or (Err "not a 2") (Err "late error") == Err "late error"
+
+    or (Ok 2) (Ok 100) == Ok 2
 
 -}
 or : Result e a -> Result e a -> Result e a
@@ -367,8 +379,11 @@ to see its definition:
     andThen : (a -> Result e b) -> Result e a -> Result e b
     andThen callback result =
         case result of
-          Ok value -> callback value
-          Err msg -> Err msg
+            Ok value ->
+                callback value
+
+            Err msg ->
+                Err msg
 
 This means we only continue with the callback if things are going well. For
 example, say you need to use (`toInt : String -> Result String Int`) to parse
