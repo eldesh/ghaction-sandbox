@@ -313,4 +313,10 @@ suite =
             \( xs, ys ) ->
                 zipWith Tuple.pair xs ys
                     |> Expect.equal (zip xs ys)
+        , fuzz (Fuzz.maybe int) "listToMaybe << maybeToList == id" <|
+            \mx ->
+                mx
+                    |> M.maybeToList
+                    |> M.listToMaybe
+                    |> Expect.equal mx
         ]
