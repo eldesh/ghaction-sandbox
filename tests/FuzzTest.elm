@@ -1,20 +1,13 @@
 module FuzzTest exposing (..)
 
 import Data.List exposing (..)
+import Data.Maybe as M
+import Data.Result as Result
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, andThen, bool, constant, int, intRange, list, listOfLength, listOfLengthBetween, pair, string)
 import Mat2d exposing (..)
 import Test exposing (..)
 import Test.Distribution exposing (..)
-
-
-isJust xs =
-    case xs of
-        Nothing ->
-            False
-
-        Just _ ->
-            True
 
 
 implication : (a -> Bool) -> (a -> Expectation) -> a -> Expectation
@@ -84,7 +77,7 @@ suite =
                     |> Expect.equal ints
         , fuzzList (list int) "the last element" <|
             implication (\x -> x /= []) <|
-                cond (isJust << last) "last for list which is not empty should return Just value."
+                cond (M.isJust << last) "last for list which is not empty should return Just value."
         , fuzz (list int) "uncons = head + tail " <|
             \ints ->
                 let
