@@ -1,0 +1,46 @@
+name: Check commit
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+env:
+  elm-version: 0.19.1
+
+jobs:
+  check_node_version:
+    name: Check node version
+    runs-on: ubuntu-22.04
+    outputs:
+      node_version: ${{ steps.check_node_version.node_version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check_node_version
+        run: |
+          echo "node_version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+
+  build_and_test:
+    name: Check format
+    runs-on: ubuntu-22.04
+    needs: [check_node_version]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jorelali/setup-elm@v6
+        with:
+          elm-version: ${{ env.elm-version }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ needs.check_node_version.outputs.node_version }}
+      - name: Install dependencies tools
+        run: |
+          npm install
+      - name: Check format
+        run: |
+          npx elm-format --validate src tests
+      - name: Make
+        run: |
+          elm make --docs=docs.json
+      - name: Run unit tests
+        run: |
+          npx elm-test
+
