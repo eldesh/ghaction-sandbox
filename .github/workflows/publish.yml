@@ -56,5 +56,5 @@ jobs:
           elm-version: ${{ env.elm-version }}
       - name: Publish package
         run: |
-          elm publish
+          echo 'elm publish'
 
